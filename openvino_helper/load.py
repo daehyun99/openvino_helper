@@ -19,7 +19,8 @@ def load(SETTING):
         print("📥 [BIN] 구글 드라이브에서 실행 파일(bin)을 가져오는 중...")
         try:
             subprocess.run(["rm", "-rf", "/content/openvino/bin"], check=True)
-            subprocess.run(["tar", "-xzf", DRIVE_BIN_ARCHIVE, "-C", "/"], check=True)
+            os.makedirs("/content/openvino", exist_ok=True)
+            subprocess.run(["tar", "-xzf", DRIVE_BIN_ARCHIVE, "-C", "/content/openvino"], check=True)
             print("✅ [BIN] 복원 완료!")
         except:
             print("❌ [BIN] 실행 파일 복원 및 압축 해제 과정에서 에러가 발생했습니다.")
