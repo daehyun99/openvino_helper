@@ -4,6 +4,7 @@ import subprocess
 def load(SETTING):
     DRIVE_CACHE_ARCHIVE = SETTING["DRIVE_CACHE_ARCHIVE"]
     DRIVE_BIN_ARCHIVE = SETTING["DRIVE_BIN_ARCHIVE"]
+    DRIVE_BUILD_ARCHIVE = SETTING["DRIVE_BUILD_ARCHIVE"]
     
     if os.path.exists(DRIVE_CACHE_ARCHIVE):
         print("📥 [CCACHE] 구글 드라이브에서 캐시를 가져오는 중...")
@@ -27,9 +28,15 @@ def load(SETTING):
     else:
         print("ℹ️ [BIN] 저장된 실행 파일이 없습니다. 다시 빌드해야 합니다.")
 
-    # 4. 설정 확인
-    print("\n📊 현재 CCACHE 상태:")
-    try:
-        subprocess.run(["ccache", "-s"], check=True)
-    except:
-        print("❌ [오류] ccache가 설치되어 있지 않거나 경로를 찾을 수 없습니다. (!apt-get install ccache를 확인하세요)")
+    if os.path.exists(DRIVE_BUILD_ARCHIVE):
+        print("📥 [BUILD] 구글 드라이브에서 빌드 파일(wheels 포함)을 가져오는 중...")
+        try:
+            # 기존 빌드 폴더 초기화 후 복원
+            subprocess.run(["rm", "-rf", "/content/openvino/build"], check=True)
+            os.makedirs("/content/openvino", exist_ok=True)
+            subprocess.run(["tar", "-xzf", DRIVE_BUILD_ARCHIVE, "-C", "/content/openvino"], check=True)
+            print("✅ [BUILD] 복원 완료!")
+        except:
+            print("❌ [BUILD] 빌드 폴더 복원 과정에서 에러가 발생했습니다.")
+    else:
+        print("ℹ️ [BUILD] 저장된 빌드 파일이 없습니다.")
