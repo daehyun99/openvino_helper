@@ -23,7 +23,7 @@ def save(SETTING):
     if os.path.exists("/" + LOCAL_BIN_DIR):
         print(f"📦 [BIN] 실행 파일 압축 및 업로드 중...")
         if os.path.exists(DRIVE_BIN_ARCHIVE):
-        subprocess.run(["tar", "-czf", DRIVE_BIN_ARCHIVE, "-C", "/content", LOCAL_BIN_DIR.replace("/content/","")], check=True)
+            subprocess.run(["tar", "-czf", DRIVE_BIN_ARCHIVE, "-C", "/content", LOCAL_BIN_DIR.replace("/content/","")], check=True)
             print("✅ [BIN] 저장 완료")
             subprocess.run(["ls", "-lh", DRIVE_BIN_ARCHIVE], check=True)
         else:
