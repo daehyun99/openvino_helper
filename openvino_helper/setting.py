@@ -1,3 +1,4 @@
+import os
 
 def setting(
     DRIVE_CACHE_ARCHIVE: str = "/content/drive/MyDrive/Build_Cache/ccache_openvino_TF_Front.tar.gz",
@@ -5,6 +6,11 @@ def setting(
     LOCAL_CACHE_DIR: str = "/content/ccache_local",
     LOCAL_BIN_DIR: str = "content/openvino/bin"
     ):
+    os.makedirs(LOCAL_CACHE_DIR, exist_ok=True)
+
+    os.environ['CCACHE_DIR'] = LOCAL_CACHE_DIR
+    os.environ['CCACHE_MAXSIZE'] = "10G"
+
     SETTING = {}
     SETTING["DRIVE_CACHE_ARCHIVE"] = DRIVE_CACHE_ARCHIVE
     SETTING["DRIVE_BIN_ARCHIVE"] = DRIVE_BIN_ARCHIVE
